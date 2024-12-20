@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../index.css" />
+    <title>Popup</title>
+    <style>
+      /* Styles nécessaires pour le positionnement du Select */
+      body {
+        width: 800px;
+        height: 600px;
+        margin: 0;
+        position: relative;
+      }
+      /* Style pour forcer le Select à rester dans le popup */
+      [data-radix-popper-content-wrapper] {
+        position: fixed !important;
+        /* Autres styles nécessaires pour le positionnement */
+        transform: none !important;
+        top: auto !important;
+        left: auto !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="popup.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+import React from "react";
+import { TwitchStream } from "@/types/twitch";
+import { TWITCH_THEME } from "@/config/theme";
+import { UserIcon } from "lucide-react";
+
+interface StreamCardFullProps {
+  stream: TwitchStream & { isLive: boolean };
+  onClick: () => void;
+}
+
+export const StreamCardFull = ({ stream, onClick }: StreamCardFullProps) => {
+  return (
+    <div
+      onClick={onClick}
+      className={`
+        bg-[${TWITCH_THEME.colors.bg.secondary}] 
+        border border-[${TWITCH_THEME.colors.border.default}] 
+        rounded-lg 
+        overflow-hidden 
+        hover:border-[${TWITCH_THEME.colors.border.hover}] 
+        transition-colors 
+        cursor-pointer
+      `}
+    >
+      <img
+        src={
+          stream.thumbnail_url
+            ? stream.thumbnail_url
+                .replace("{width}", "320")
+                .replace("{height}", "180")
+            : `https://static-cdn.jtvnw.net/ttv-static/404_preview-320x180.jpg`
+        }
+        alt={stream.title || stream.user_name}
+        className="w-full aspect-video object-cover"
+      />
+
+      <div className="p-3 space-y-2">
+        {/* Première ligne: nom du stream et viewers */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <span
+              className={`font-bold text-[${TWITCH_THEME.colors.text.primary}]`}
+            >
+              {stream.user_name}
+            </span>
+          </div>
+          {stream.isLive ? (
+            <div className="flex items-center gap-1 ml-auto">
+              <span
+                className={`flex items-center gap-1 text-sm text-[${TWITCH_THEME.colors.text.secondary}]`}
+              >
+                <UserIcon className="w-4 h-4" />
+                {stream.viewer_count?.toLocaleString()}
+              </span>
+            </div>
+          ) : (
+            <span
+              className={`text-sm text-[${TWITCH_THEME.colors.text.secondary}] ml-auto`}
+            >
+              Offline
+            </span>
+          )}
+        </div>
+
+        {/* Deuxième ligne: jeu */}
+        {stream.isLive && stream.game_name && (
+          <div
+            className={`text-sm font-medium text-[${TWITCH_THEME.colors.text.secondary}]`}
+          >
+            {stream.game_name}
+          </div>
+        )}
+
+        {/* Troisième ligne: titre complet */}
+        {stream.isLive && stream.title && (
+          <div
+            className={`
+            text-sm 
+            text-[${TWITCH_THEME.colors.text.secondary}]
+            break-words
+          `}
+          >
+            {stream.title}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

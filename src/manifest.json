@@ -1,0 +1,56 @@
+{
+  "{{chrome}}.manifest_version": 3,
+  "{{firefox}}.manifest_version": 2,
+  "options_ui": {
+    "page": "src/Options/Options.html"
+  },
+  "icons": {
+    "16": "icon/16.png",
+    "32": "icon/32.png",
+    "48": "icon/48.png",
+    "96": "icon/96.png",
+    "128": "icon/128.png"
+  },
+  "{{chrome}}.action": {
+    "default_popup": "src/popup/popup.html"
+  },
+  "{{firefox}}.browser_action": {
+    "default_title": "Boost",
+    "default_popup": "src/Popup/Popup.html"
+  },
+  "background": {
+    "{{chrome}}.service_worker": "src/background.ts",
+    "{{firefox}}.scripts": ["src/background.ts"]
+  },
+  "permissions": [
+    "clipboardRead",
+    "clipboardWrite",
+    "activeTab",
+    "tabs",
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "webRequestFilterResponse",
+    "*://*.leanix.net/*",
+    "bookmarks"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "mathias.pfauwadel@leanix.net",
+      "strict_min_version": "109.0"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.leanix.net/*"],
+      "js": ["src/content_script.tsx"]
+    }
+  ],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U"
+      }
+    }
+  }
+}
