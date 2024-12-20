@@ -10,12 +10,38 @@ import {
 import { TWITCH_THEME } from "@/config/theme";
 import { useStreamStore } from "@/Streams/Stores/useStore";
 import { getGridClass } from "./gridHelper";
+import { Folder, Radio } from "lucide-react";
 
 interface BookmarkFolderProps {
   folder: BookmarkNode;
   onlineStreams: Record<string, TwitchStream>;
   searchTerm: string;
 }
+
+const calculateStreamCounts = (
+  node: BookmarkNode,
+  streams: Record<string, TwitchStream>
+) => {
+  let counts = { online: 0, total: 0 };
+
+  // Compter les streams directs
+  node.children?.forEach((child) => {
+    if (child.url?.includes("twitch.tv")) {
+      counts.total++;
+      if (streams[child.title.toLowerCase()]) {
+        counts.online++;
+      }
+    }
+    // Ajouter récursivement les compteurs des sous-dossiers
+    if (child.children) {
+      const subCounts = calculateStreamCounts(child, streams);
+      counts.online += subCounts.online;
+      counts.total += subCounts.total;
+    }
+  });
+
+  return counts;
+};
 
 export const BookmarkFolder = ({
   folder,
@@ -76,6 +102,9 @@ export const BookmarkFolder = ({
       return a.isLive ? -1 : 1;
     });
 
+  // Calculer le nombre de streams online et total
+  const streamCounts = calculateStreamCounts(folder, onlineStreams);
+
   if (searchTerm && filteredAndSortedStreams.length === 0) {
     return null;
   }
@@ -83,36 +112,45 @@ export const BookmarkFolder = ({
   return (
     <AccordionItem
       value={folder.id}
-      className={`
+      className="
         border 
         rounded-lg
-        bg-[${TWITCH_THEME.colors.bg.secondary}]
-        hover:border-[${TWITCH_THEME.colors.border.hover}]
+        bg-twitch-bg-secondary
+        border-twitch-border-default
+        hover:border-twitch-border-hover
         transition-colors
-      `}
+      "
     >
       <AccordionTrigger
-        className={`
-          px-4 
+        className="
+          px-4 py-2
           hover:no-underline 
-          hover:bg-[${TWITCH_THEME.colors.bg.hover}]
-          data-[state=open]:bg-[${TWITCH_THEME.colors.bg.hover}]
+          hover:bg-twitch-bg-hover
+          data-[state=open]:bg-twitch-bg-hover
           transition-colors
-        `}
+        "
       >
-        <div className="flex items-center gap-2">
-          <span className={`text-[${TWITCH_THEME.colors.text.primary}]`}>
+        <div className="flex items-center gap-3">
+          <Folder className="h-4 w-4 text-twitch-brand-primary" />
+          <span className="text-twitch-text-primary">
             {folder.title}
           </span>
-          <span
-            className={`text-sm text-[${TWITCH_THEME.colors.text.secondary}]`}
-          >
-            ({filteredAndSortedStreams.length})
-          </span>
+          <div className="flex items-center gap-1">
+            <Radio 
+              className={`h-3 w-3 ${
+                streamCounts.online > 0
+                  ? 'text-twitch-status-live'
+                  : 'text-twitch-text-secondary'
+              }`}
+              fill={streamCounts.online > 0 ? 'currentColor' : 'none'} 
+            />
+            <span className="text-sm text-twitch-text-secondary">
+              {streamCounts.online}/{streamCounts.total}
+            </span>
+          </div>
         </div>
       </AccordionTrigger>
       <AccordionContent className="p-4">
-        {/* Sous-dossiers */}
         <div className="space-y-4">
           {folder.children
             ?.filter((child) => child.children)

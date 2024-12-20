@@ -35,38 +35,39 @@ export const StreamList = () => {
     }
 
     const foldersToOpen = bookmarks
-      .filter(folder => 
-        folder.children?.some(bookmark => {
+      .filter((folder) =>
+        folder.children?.some((bookmark) => {
           const stream = onlineStreams[bookmark.title.toLowerCase()];
           if (!stream) return false;
-          
+
           const searchLower = searchTerm.toLowerCase();
-          return stream.user_name.toLowerCase().includes(searchLower) ||
-                 stream.title?.toLowerCase().includes(searchLower) ||
-                 stream.game_name?.toLowerCase().includes(searchLower);
+          return (
+            stream.user_name.toLowerCase().includes(searchLower) ||
+            stream.title?.toLowerCase().includes(searchLower) ||
+            stream.game_name?.toLowerCase().includes(searchLower)
+          );
         })
       )
-      .map(folder => folder.id);
+      .map((folder) => folder.id);
 
     setOpenFolders(foldersToOpen);
   }, [searchTerm, bookmarks, onlineStreams]);
 
   return (
-    <div
-      className={`w-full min-h-screen bg-[${TWITCH_THEME.colors.bg.primary}] text-[${TWITCH_THEME.colors.text.primary}]`}
-    >
+    <div className="min-h-screen bg-twitch-bg-primary text-twitch-text-primary">
       <div
-        className={`
+        className="
         sticky 
         top-0 
         z-10 
-        bg-[${TWITCH_THEME.colors.bg.primary}] 
+        bg-twitch-bg-primary
         border-b 
-        border-[${TWITCH_THEME.colors.border.default}]
+        border-twitch-border-default
         p-4
         backdrop-blur-sm
         bg-opacity-90
-      `}
+        hover:bg-twitch-bg-hover
+      "
       >
         <div className="flex justify-between items-center h-10">
           <Input
@@ -74,13 +75,13 @@ export const StreamList = () => {
             placeholder="Search streams..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`w-64 bg-[${TWITCH_THEME.colors.bg.secondary}] border-[${TWITCH_THEME.colors.border.default}] text-[${TWITCH_THEME.colors.text.primary}] placeholder:text-[${TWITCH_THEME.colors.text.secondary}]`}
+            className="w-64 bg-twitch-bg-secondary border-twitch-border-default text-twitch-text-primary placeholder:text-twitch-text-secondary"
           />
           <div className="flex items-center justify-center align-middle space-x-6">
-            <span className="text-sm">Compact</span>
-            <Switch 
-              checked={isCompactView || false} 
-              onCheckedChange={(value: boolean) => setCompactView(value)} 
+            <span className="text-sm text-[#efeff1]">Compact</span>
+            <Switch
+              checked={isCompactView || false}
+              onCheckedChange={(value: boolean) => setCompactView(value)}
             />
             <StreamsPerRowControl />
           </div>
@@ -88,8 +89,8 @@ export const StreamList = () => {
       </div>
 
       <div className="p-4 space-y-4">
-        <Accordion 
-          type="multiple" 
+        <Accordion
+          type="multiple"
           className="space-y-4"
           value={openFolders}
           onValueChange={setOpenFolders}

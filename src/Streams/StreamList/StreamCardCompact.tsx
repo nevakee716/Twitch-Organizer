@@ -21,40 +21,34 @@ export const StreamCardCompact = ({
   return (
     <div
       onClick={onClick}
-      className={`
-        bg-[${TWITCH_THEME.colors.bg.secondary}] 
-        border border-[${TWITCH_THEME.colors.border.default}] 
+      className="
+        bg-twitch-bg-secondary 
+        border border-twitch-border-default 
         rounded-lg 
         overflow-hidden 
-        hover:border-[${TWITCH_THEME.colors.border.hover}] 
+        hover:border-twitch-border-hover 
         transition-colors 
         p-3 
         cursor-pointer
         space-y-1
-      `}
+      "
     >
       {/* Première ligne: nom du stream et viewers */}
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-2">
-          <span
-            className={`font-bold text-[${TWITCH_THEME.colors.text.primary}]`}
-          >
+          <span className="font-bold text-twitch-text-primary">
             {stream.user_name}
           </span>
         </div>
         {stream.isLive ? (
           <div className="flex items-center gap-1 ml-auto">
-            <span
-              className={`flex items-center gap-1 text-sm text-[${TWITCH_THEME.colors.text.secondary}]`}
-            >
+            <span className="flex items-center gap-1 text-sm text-twitch-text-secondary">
               <UserIcon className="w-4 h-4" />
               {stream.viewer_count?.toLocaleString()}
             </span>
           </div>
         ) : (
-          <span
-            className={`text-sm text-[${TWITCH_THEME.colors.text.secondary}] ml-auto`}
-          >
+          <span className="text-sm text-twitch-text-secondary ml-auto">
             Offline
           </span>
         )}
@@ -62,9 +56,7 @@ export const StreamCardCompact = ({
 
       {/* Deuxième ligne: jeu */}
       {stream.isLive && stream.game_name && (
-        <div
-          className={`text-sm font-medium text-[${TWITCH_THEME.colors.text.secondary}]`}
-        >
+        <div className="text-sm font-medium text-twitch-text-secondary">
           {stream.game_name}
         </div>
       )}
@@ -74,13 +66,7 @@ export const StreamCardCompact = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div
-                className={`
-                text-sm 
-                text-[${TWITCH_THEME.colors.text.secondary}] 
-                truncate
-              `}
-              >
+              <div className="text-sm text-twitch-text-secondary truncate">
                 {stream.title}
               </div>
             </TooltipTrigger>
