@@ -1,7 +1,7 @@
 {
   "{{chrome}}.manifest_version": 3,
   "{{firefox}}.manifest_version": 2,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "options_ui": {
     "page": "src/Options/Options.html"
   },
@@ -21,7 +21,9 @@
   },
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
-    "{{firefox}}.scripts": ["src/background.ts"]
+    "{{firefox}}.scripts": [
+      "src/background.ts"
+    ]
   },
   "permissions": [
     "clipboardRead",
@@ -43,8 +45,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.leanix.net/*"],
-      "js": ["src/content_script.tsx"]
+      "matches": [
+        "*://*.leanix.net/*"
+      ],
+      "js": [
+        "src/content_script.tsx"
+      ]
     }
   ],
   "commands": {
