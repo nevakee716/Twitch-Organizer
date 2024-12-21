@@ -10,17 +10,12 @@ import {
 } from "@/components/ui/tooltip";
 
 interface StreamCardCompactProps {
-  stream: TwitchStream & { isLive: boolean };
-  onClick: () => void;
+  stream: TwitchStream;
 }
 
-export const StreamCardCompact = ({
-  stream,
-  onClick,
-}: StreamCardCompactProps) => {
+export const StreamCardCompact = ({ stream }: StreamCardCompactProps) => {
   return (
     <div
-      onClick={onClick}
       className="
         bg-twitch-bg-secondary 
         border border-twitch-border-default 

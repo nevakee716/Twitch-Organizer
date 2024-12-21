@@ -1,5 +1,4 @@
-import type { TwitchDevAppsInfo } from "@/utils/env";
-import browser from "webextension-polyfill";
+import type { TwitchCredentials } from "@/types/twitchCredential";
 export interface TokenResponse {
   access_token: string;
   token_type: string;
@@ -14,42 +13,45 @@ export class AuthManager {
   static async getInstance(): Promise<AuthManager> {
     if (!this.instance) {
       this.instance = new AuthManager();
+      console.log("AuthManager instance created");
     }
     return this.instance;
   }
 
   private async fetchToken(
-    environment: TwitchDevAppsInfo
+    twitchCredentials: TwitchCredentials
   ): Promise<TokenResponse> {
     const tokenUrl = "https://id.twitch.tv/oauth2/token";
-    
+
     const response = await fetch(tokenUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        client_id: environment.clientId,
-        client_secret: environment.clientSecret,
-        grant_type: "client_credentials"
+        client_id: twitchCredentials.clientId,
+        client_secret: twitchCredentials.clientSecret,
+        grant_type: "client_credentials",
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Failed to fetch token (${response.status}): ${errorText}`);
+      throw new Error(
+        `Failed to fetch token (${response.status}): ${errorText}`
+      );
     }
 
     const data: TokenResponse = await response.json();
     return data;
   }
 
-  async getToken(environment: TwitchDevAppsInfo): Promise<string> {
-    const key = environment.clientId;
+  async getToken(twitchCredentials: TwitchCredentials): Promise<string> {
+    const key = twitchCredentials.clientId;
     const tokenData = this.tokenMap.get(key);
 
     if (!tokenData || !tokenData.token || tokenData.expiry < new Date()) {
-      const tokenResponse = await this.fetchToken(environment);
+      const tokenResponse = await this.fetchToken(twitchCredentials);
       const newTokenData = {
         token: tokenResponse.access_token,
         expiry: new Date(Date.now() + tokenResponse.expires_in * 1000),
@@ -62,7 +64,7 @@ export class AuthManager {
     return tokenData.token;
   }
 
-  clearToken(environment: TwitchDevAppsInfo): void {
-    this.tokenMap.delete(environment.clientId);
+  clearToken(twitchCredentials: TwitchCredentials): void {
+    this.tokenMap.delete(twitchCredentials.clientId);
   }
 }

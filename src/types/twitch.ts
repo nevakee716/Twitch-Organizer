@@ -14,4 +14,5 @@ export interface TwitchStream {
   tag_ids: string[];
   tags: string[];
   is_mature: boolean;
-} 
+  isLive?: boolean;
+}

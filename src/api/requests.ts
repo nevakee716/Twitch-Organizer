@@ -1,29 +1,31 @@
 import { AuthManager } from "./auth";
-import type { TwitchDevAppsInfo } from "@/utils/env";
+import type { TwitchCredentials } from "@/types/twitchCredential";
 import { TwitchStream } from "@/types/twitch";
 
 export class APIClient {
   private static instance: APIClient;
-  private environment: TwitchDevAppsInfo;
+  private twitchCredentials: TwitchCredentials;
   private authManager: AuthManager;
 
   private constructor(
-    environment: TwitchDevAppsInfo,
+    twitchCredentials: TwitchCredentials,
     authManager: AuthManager
   ) {
-    this.environment = environment;
+    this.twitchCredentials = twitchCredentials;
     this.authManager = authManager;
+    console.log("APIClient instance created");
   }
 
   static async getInstance(
-    environment?: TwitchDevAppsInfo
+    twitchCredentials?: TwitchCredentials
   ): Promise<APIClient> {
     if (
-      environment &&
-      (!this.instance || this.instance.environment.name !== environment.name)
+      twitchCredentials &&
+      (!this.instance ||
+        this.instance.twitchCredentials.clientId !== twitchCredentials.clientId)
     ) {
       const auth = await AuthManager.getInstance();
-      this.instance = new APIClient(environment, auth);
+      this.instance = new APIClient(twitchCredentials, auth);
     }
     if (!this.instance) {
       throw new Error("APIClient not initialized");
@@ -32,11 +34,11 @@ export class APIClient {
   }
 
   private async fetchWithAuth(endpoint: string): Promise<Response> {
-    const token = await this.authManager.getToken(this.environment);
+    const token = await this.authManager.getToken(this.twitchCredentials);
     const response = await fetch(`https://api.twitch.tv/helix${endpoint}`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Client-Id": this.environment.clientId,
+        "Client-Id": this.twitchCredentials.clientId,
         "Content-Type": "application/json",
       },
     });
@@ -48,7 +50,9 @@ export class APIClient {
     return response;
   }
 
-  async getStreamStatuses(usernames: string[]): Promise<Record<string, TwitchStream>> {
+  async getStreamStatuses(
+    usernames: string[]
+  ): Promise<Record<string, TwitchStream>> {
     try {
       const chunks = [];
       for (let i = 0; i < usernames.length; i += 100) {
@@ -73,6 +77,4 @@ export class APIClient {
       throw error;
     }
   }
-
-  // Ajoutez d'autres méthodes API ici
 }

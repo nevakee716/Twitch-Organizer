@@ -1,12 +1,6 @@
 import browser from "webextension-polyfill";
 import { devBookmarks } from "@/config/dev.bookmarks";
-
-export interface BookmarkNode {
-  id: string;
-  title: string;
-  url?: string;
-  children?: BookmarkNode[];
-}
+import { BookmarkNode } from "@/types/bookmark";
 
 export async function getTwitchBookmarks(): Promise<BookmarkNode[]> {
   try {

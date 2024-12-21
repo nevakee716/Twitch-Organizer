@@ -2,95 +2,84 @@ import browser from "webextension-polyfill";
 import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { TwitchDevAppsInfo } from "@/utils/env";
+import { Label } from "@/components/ui/label";
+
+interface TwitchCredentials {
+  clientId: string;
+  clientSecret: string;
+}
 
 const OptionsPage = () => {
-  const [twitchDevAppsInfo, setTwitchDevAppsInfo] = useState<
-    TwitchDevAppsInfo[]
-  >([]);
+  const [credentials, setCredentials] = useState<TwitchCredentials>({
+    clientId: "",
+    clientSecret: "",
+  });
 
-  // Load options from chrome storage on component mount
+  // Load credentials from storage on component mount
   useEffect(() => {
-    const fetchData = async () => {
-      let result = await browser.storage.local.get(["twitchDevAppsInfo"]);
-      if (result.twitchDevAppsInfo)
-        setTwitchDevAppsInfo(result.twitchDevAppsInfo);
+    const loadCredentials = async () => {
+      const result = await browser.storage.local.get(["twitchCredentials"]);
+      if (result.twitchCredentials) {
+        setCredentials(result.twitchCredentials);
+      }
     };
-
-    fetchData();
+    loadCredentials();
   }, []);
 
-  const handleAddTwitchDevAppsInfo = () => {
-    const newTwitchDevAppsInfo = [
-      ...twitchDevAppsInfo,
-      { name: "", clientId: "", clientSecret: "" },
-    ];
-    setTwitchDevAppsInfo(newTwitchDevAppsInfo);
-    browser.storage.local.set({ twitchDevAppsInfo: newTwitchDevAppsInfo });
-  };
-
-  const handleRemoveTwitchDevAppsInfo = (index: number) => {
-    const newTwitchDevAppsInfo = [...twitchDevAppsInfo];
-    newTwitchDevAppsInfo.splice(index, 1);
-    setTwitchDevAppsInfo(newTwitchDevAppsInfo);
-    browser.storage.local.set({ twitchDevAppsInfo: newTwitchDevAppsInfo });
-  };
-
-  const handleTwitchDevAppsInfoChange =
-    (index: number, field: "name" | "clientId" | "clientSecret") =>
-    (event: any) => {
-      const newTwitchDevAppsInfo = [...twitchDevAppsInfo];
-      newTwitchDevAppsInfo[index][field] = event.target.value;
-      setTwitchDevAppsInfo(newTwitchDevAppsInfo);
-      browser.storage.local.set({ twitchDevAppsInfo: newTwitchDevAppsInfo });
+  const handleChange =
+    (field: keyof TwitchCredentials) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newCredentials = {
+        ...credentials,
+        [field]: event.target.value,
+      };
+      setCredentials(newCredentials);
+      browser.storage.local.set({ twitchCredentials: newCredentials });
     };
 
   return (
-    <div className="w-full">
-      <Tabs defaultValue="twitch" className="w-full">
-        <TabsList>
-          <TabsTrigger value="twitch">Twitch</TabsTrigger>
-        </TabsList>
+    <div className="container max-w-2xl mx-auto p-8 space-y-8">
+      <h1 className="text-2xl font-bold mb-6">Twitch API Configuration</h1>
 
-        <TabsContent value="twitch">
-          {twitchDevAppsInfo.map((key, index) => (
-            <div className="flex items-center justify-between">
-              <Input
-                type="text"
-                placeholder={`Name`}
-                value={key.name}
-                onChange={handleTwitchDevAppsInfoChange(index, "name")}
-              />
-              <Input
-                type="text"
-                placeholder={`Client ID`}
-                value={key.clientId}
-                onChange={handleTwitchDevAppsInfoChange(index, "clientId")}
-              />
-              <Input
-                type="text"
-                placeholder={`Client Secret`}
-                value={key.clientSecret}
-                onChange={handleTwitchDevAppsInfoChange(index, "clientSecret")}
-              />
-              <Button
-                variant="secondary"
-                onClick={() => handleRemoveTwitchDevAppsInfo(index)}
-              >
-                Remove
-              </Button>
-            </div>
-          ))}
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="clientId">Client ID</Label>
+          <Input
+            id="clientId"
+            type="text"
+            value={credentials.clientId}
+            onChange={handleChange("clientId")}
+            placeholder="Enter your Twitch Client ID"
+            className="w-full"
+          />
+        </div>
 
-          <div>
-            <Button variant="default" onClick={handleAddTwitchDevAppsInfo}>
-              Add Twitch Key
-            </Button>
-          </div>
-        </TabsContent>
-      </Tabs>
+        <div className="space-y-2">
+          <Label htmlFor="clientSecret">Client Secret</Label>
+          <Input
+            id="clientSecret"
+            type="password"
+            value={credentials.clientSecret}
+            onChange={handleChange("clientSecret")}
+            placeholder="Enter your Twitch Client Secret"
+            className="w-full"
+          />
+        </div>
+      </div>
+
+      <div className="text-sm text-gray-500">
+        Ces informations sont nécessaires pour accéder à l'API Twitch. Vous
+        pouvez les obtenir en créant une application sur{" "}
+        <a
+          href="https://dev.twitch.tv/console/apps"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-twitch-brand-primary hover:underline"
+        >
+          la console développeur Twitch
+        </a>
+        .
+      </div>
     </div>
   );
 };

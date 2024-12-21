@@ -1,17 +1,13 @@
-import React from "react";
 import { TwitchStream } from "@/types/twitch";
-import { TWITCH_THEME } from "@/config/theme";
 import { UserIcon } from "lucide-react";
 
 interface StreamCardFullProps {
-  stream: TwitchStream & { isLive: boolean };
-  onClick: () => void;
+  stream: TwitchStream;
 }
 
-export const StreamCardFull = ({ stream, onClick }: StreamCardFullProps) => {
+export const StreamCardFull = ({ stream }: StreamCardFullProps) => {
   return (
     <div
-      onClick={onClick}
       className="
         bg-twitch-bg-secondary 
         border border-twitch-border-default 

@@ -44,8 +44,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: [
-        // Exclure les fichiers de dev de la compilation
-        /src\/config\/dev\.config\.ts$/
+        // Exclure les fichiers de dev de la compilation en production uniquement
+        ...(isProd ? [/src\/config\/dev\.config\.ts$/] : [])
       ]
     }
   }
