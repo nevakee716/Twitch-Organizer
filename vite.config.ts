@@ -36,4 +36,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      external: [
+        // Exclure les fichiers de dev de la compilation
+        /src\/config\/dev\.config\.ts$/
+      ]
+    }
+  }
 });
