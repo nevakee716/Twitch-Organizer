@@ -9,8 +9,8 @@
     "postinstall": "[ -f src/config/dev.config.ts ] || cp src/config/dev.config.template.ts src/config/dev.config.ts",
     "release_minor": "npm version minor && npm run update_manifest_minor && git add . && npm run xpiRelease && zip -r twitch-bookmarks.zip dist/web-ext-artifacts && git add . && git commit -m \"repackage\" && git push",
     "release_major": "npm version major && npm run update_manifest_major && git add . && npm run xpiRelease && zip -r twitch-bookmarks.zip dist/web-ext-artifacts && git add . && git commit -m \"repackage\" && git push",
-    "update_manifest_minor": "jq '.version |= (split(\".\") | .[1] |= (tonumber + 1 | tostring) | join(\".\"))' ./public/manifest.json > temp.json && mv temp.json ./public/manifest.json",
-    "update_manifest_major": "jq '.version |= (split(\".\") | .[0] |= (tonumber + 1 | tostring) | .[1] = \"0\" | .[2] = \"0\" | join(\".\"))' ./public/manifest.json > temp.json && mv temp.json ./public/manifest.json",
+    "update_manifest_minor": "jq '.version |= (split(\".\") | .[1] |= (tonumber + 1 | tostring) | join(\".\"))' ./src/manifest.json > temp.json && mv temp.json ./public/manifest.json",
+    "update_manifest_major": "jq '.version |= (split(\".\") | .[0] |= (tonumber + 1 | tostring) | .[1] = \"0\" | .[2] = \"0\" | join(\".\"))' ./src/manifest.json > temp.json && mv temp.json ./public/manifest.json",
     "xpiExport": "cd dist && web-ext sign --api-key=user:$mozillaUser --api-secret=$mozillaKey --channel=unlisted",
     "xpiRelease": "npm run clean && npm run build && npm run xpiExport && mv \"./dist/web-ext-artifacts/$(ls -t ./dist/web-ext-artifacts | head -1)\" firefox.xpi",
     "clean": "rimraf dist"
