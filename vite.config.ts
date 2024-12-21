@@ -17,6 +17,10 @@ function generateManifest() {
   };
 }
 
+// Détermine si on est en mode production
+const isProd = process.env.NODE_ENV === "production";
+console.log(process.env.NODE_ENV);
+
 export default defineConfig({
   plugins: [
     react(),
@@ -29,6 +33,7 @@ export default defineConfig({
           browserConsole: true,
         },
       },
+      additionalInputs: ["src/Streams/Streams.html"],
     }),
   ],
   resolve: {
