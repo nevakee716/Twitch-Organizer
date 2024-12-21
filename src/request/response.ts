@@ -1,3 +1,5 @@
+import browser from "webextension-polyfill";
+
 const getResponseBody = (id: any) => {
   let decoder = new TextDecoder('utf-8');
 
