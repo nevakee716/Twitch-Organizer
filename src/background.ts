@@ -14,8 +14,8 @@ browser.runtime.onInstalled.addListener(async (details) => {
   console.log("Extension installed:", details);
 });
 
-// Ajout de l'initialisation de l'environnement de développement
-if (process.env.NODE_ENV === "development") {
+// Code de développement qui sera exclu en production
+if (import.meta.env.DEV) {
   // Import dev config only in development
   import("./config/dev.config").then(({ devTwitchApps }) => {
     browser.storage.local.set({
@@ -23,14 +23,11 @@ if (process.env.NODE_ENV === "development") {
     });
   });
 
-  browser.runtime.onInstalled.addListener((details) => {
-    console.log("Extension installed:", details);
-  });
-
   browser.tabs.create({
     url: browser.runtime.getURL("src/streams/streams.html"),
   });
 }
+
 const data: any = {};
 console.log("Background Script Started");
 browser.runtime.onMessage.addListener(
