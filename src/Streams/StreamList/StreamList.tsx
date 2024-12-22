@@ -45,14 +45,13 @@ export const StreamList = () => {
                   bookmarkStreams={bookmarkAndFilteredStreams}
                 />
               </div>
-              {false && (
-                <div className="flex-1 p-4 overflow-y-auto">
-                  <StreamExplorerView
-                    bookmarkStreams={bookmarkAndFilteredStreams}
-                    selectedBookmarkStreamsId={selectedBookmarkStreamsId}
-                  />
-                </div>
-              )}
+
+              <div className="flex-1 p-4 overflow-y-auto">
+                <StreamExplorerView
+                  bookmarkStreams={bookmarkAndFilteredStreams}
+                  selectedBookmarkStreamsId={selectedBookmarkStreamsId}
+                />
+              </div>
             </div>
           ) : (
             bookmarkAndFilteredStreams.map((bookmarkStream) => (

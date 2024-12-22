@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BookmarkStreams } from "@/types/bookmark";
 import { cn } from "@/lib/utils";
 import { FolderIcon, ChevronRight, Radio } from "lucide-react";
@@ -7,6 +7,7 @@ import { calculateStreamCounts } from "@/utils/streamUtils";
 interface FolderTreeProps {
   bookmarkStreams: BookmarkStreams;
   selectedBookmarkStreamsId: string | null;
+  isAlwaysOpen?: boolean;
   onSelectBookmarkStream: (id: string) => void;
 }
 
@@ -14,14 +15,33 @@ const FolderTreeItem = ({
   bookmarkStream,
   selectedBookmarkStreamsId,
   onSelectBookmarkStream,
+  isAlwaysOpen = false,
   level = 0,
+  isSingleFolder = false,
 }: {
   bookmarkStream: BookmarkStreams;
   selectedBookmarkStreamsId: string | null;
   onSelectBookmarkStream: (id: string) => void;
   level?: number;
+  isSingleFolder?: boolean;
+  isAlwaysOpen?: boolean;
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+
+  useEffect(() => {
+    if (isAlwaysOpen || isSingleFolder) {
+      setIsOpen(true);
+    }
+
+    if (isSingleFolder && bookmarkStream.children.length === 0) {
+      onSelectBookmarkStream(bookmarkStream.id);
+    }
+  }, [
+    isAlwaysOpen,
+    isSingleFolder,
+    bookmarkStream.children.length,
+    bookmarkStream.id,
+  ]);
 
   return (
     <div className="space-y-1">
@@ -34,7 +54,7 @@ const FolderTreeItem = ({
             "bg-twitch-brand-primary text-white",
           "transition-colors"
         )}
-        style={{ paddingLeft: `${level * 1.5 + 0.5}rem` }}
+        style={{ paddingLeft: `${level * 0.5}rem` }}
       >
         <div className="flex items-center flex-1">
           <div className="w-4 mr-1">
@@ -55,7 +75,7 @@ const FolderTreeItem = ({
           <span className="truncate">{bookmarkStream.title}</span>
         </div>
 
-        <div className="flex items-center gap-1 ml-2">
+        <div className="flex items-center justify-around gap-1 ml-2">
           <Radio
             className={cn(
               "h-3 w-3",
@@ -65,7 +85,7 @@ const FolderTreeItem = ({
             )}
             fill={bookmarkStream.onlineCount > 0 ? "currentColor" : "none"}
           />
-          <span className="text-sm text-twitch-text-secondary">
+          <span className="w-4 text-sm text-twitch-text-secondary">
             {bookmarkStream.onlineCount}/{bookmarkStream.filteredCount}
           </span>
         </div>
@@ -77,6 +97,9 @@ const FolderTreeItem = ({
             <FolderTreeItem
               key={subfolder.id}
               bookmarkStream={subfolder}
+              isSingleFolder={
+                isSingleFolder && bookmarkStream.children.length === 1
+              }
               selectedBookmarkStreamsId={selectedBookmarkStreamsId}
               onSelectBookmarkStream={onSelectBookmarkStream}
               level={level + 1}
@@ -95,9 +118,11 @@ export const FolderTree: React.FC<FolderTreeProps> = ({
 }) => {
   return (
     <div className="space-y-1">
-      {bookmarkStreams.children.map((bookmarkStream) => (
+      {[bookmarkStreams].map((bookmarkStream) => (
         <FolderTreeItem
           key={bookmarkStream.id}
+          isAlwaysOpen={true}
+          isSingleFolder={true}
           bookmarkStream={bookmarkStream}
           selectedBookmarkStreamsId={selectedBookmarkStreamsId}
           onSelectBookmarkStream={onSelectBookmarkStream}
