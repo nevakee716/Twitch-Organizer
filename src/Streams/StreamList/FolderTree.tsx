@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { BookmarkStreams } from "@/types/bookmark";
 import { cn } from "@/lib/utils";
 import { FolderIcon, ChevronRight, Radio } from "lucide-react";
-import { calculateStreamCounts } from "@/utils/streamUtils";
 
 interface FolderTreeProps {
   bookmarkStreams: BookmarkStreams;
