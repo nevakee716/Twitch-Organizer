@@ -2,6 +2,7 @@ import React from "react";
 import { BookmarkStreams } from "@/types/bookmark";
 import { StreamGrid } from "./StreamGrid";
 import { useStreamStore } from "../Stores/useStore";
+import { sortStreams } from "@/utils/streamUtils";
 interface StreamExplorerViewProps {
   bookmarkStreams: BookmarkStreams;
   selectedBookmarkStreamsId: string | null;
@@ -38,12 +39,7 @@ export const StreamExplorerView: React.FC<StreamExplorerViewProps> = ({
       });
     };
     getChildrenStreams(bookmarkStream);
-    return streams.sort((a, b) => {
-      if (a.isLive !== b.isLive) {
-        return b.isLive ? 1 : -1;
-      }
-      return a.user_name.localeCompare(b.user_name);
-    });
+    return sortStreams(streams);
   };
 
   if (!selectedBookmarkStreamsId) {

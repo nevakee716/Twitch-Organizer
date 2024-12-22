@@ -9,6 +9,7 @@ import {
 import { Folder, Radio } from "lucide-react";
 import { StreamGrid } from "./StreamGrid";
 import { cn } from "@/lib/utils";
+import { sortStreams } from "@/utils/streamUtils";
 
 interface StreamAccordeonProps {
   bookmarkStreams: BookmarkStreams;
@@ -71,7 +72,7 @@ export const StreamAccordeon = ({
               />
             ))}
             {bookmarkStreams.streams.length > 0 && (
-              <StreamGrid streams={bookmarkStreams.streams} />
+              <StreamGrid streams={sortStreams(bookmarkStreams.streams)} />
             )}
           </div>
         </AccordionContent>
