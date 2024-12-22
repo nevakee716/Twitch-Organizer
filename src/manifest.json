@@ -23,11 +23,5 @@
     "{{chrome}}.service_worker": "src/background.ts",
     "{{firefox}}.scripts": ["src/background.ts"]
   },
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "storage",
-    "*://*.twitch.tv/*",
-    "bookmarks"
-  ]
+  "permissions": ["storage", "bookmarks"]
 }
