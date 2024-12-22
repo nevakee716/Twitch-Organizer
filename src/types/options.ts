@@ -8,8 +8,8 @@ export interface StreamOptions {
 
 export const defaultOptions: StreamOptions = {
   searchTerm: "",
-  isCompactView: false,
-  isExplorerView: false,
+  isCompactView: true,
+  isExplorerView: true,
   hideOfflineStreams: false,
   streamsPerRow: 3,
-}; 
+};
