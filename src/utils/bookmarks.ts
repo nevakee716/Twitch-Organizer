@@ -2,6 +2,23 @@ import browser from "webextension-polyfill";
 import { devBookmarks } from "@/config/dev.bookmarks";
 import { BookmarkNode } from "@/types/bookmark";
 
+function cleanBookmarkTree(node: BookmarkNode): BookmarkNode {
+  // Clone le noeud pour éviter de modifier l'original
+  const cleanNode = { ...node };
+  
+  // Nettoie le titre en enlevant "- Twitch"
+  if (cleanNode.title) {
+    cleanNode.title = cleanNode.title.replace(/\s*-\s*Twitch$/i, '');
+  }
+
+  // Récursivement nettoie les enfants s'ils existent
+  if (cleanNode.children) {
+    cleanNode.children = cleanNode.children.map(child => cleanBookmarkTree(child));
+  }
+
+  return cleanNode;
+}
+
 export async function getTwitchBookmarks(): Promise<BookmarkNode[]> {
   try {
     const bookmarks = await browser.bookmarks.search({
@@ -10,7 +27,8 @@ export async function getTwitchBookmarks(): Promise<BookmarkNode[]> {
     if (bookmarks.length > 0) {
       const folder = bookmarks[0];
       const subTree = await browser.bookmarks.getSubTree(folder.id);
-      return subTree[0].children || [];
+      // Nettoie l'arbre avant de le retourner
+      return subTree[0].children?.map(child => cleanBookmarkTree(child)) || [];
     }
     return [];
   } catch (error) {
