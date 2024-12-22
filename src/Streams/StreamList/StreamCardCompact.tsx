@@ -25,7 +25,8 @@ export const StreamCardCompact: React.FC<StreamCardCompactProps> = ({
         border border-twitch-border-active 
         rounded-lg 
         overflow-hidden 
-        hover:bg-twitch-bg-tertiary
+        hover:border-twitch-border-hover
+        hover:bg-twitch-bg-primary
         transition-colors 
         p-3 
         cursor-pointer

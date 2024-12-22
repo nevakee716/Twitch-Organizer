@@ -6,15 +6,19 @@ interface StreamCardFullProps {
   className?: string;
 }
 
-export const StreamCardFull: React.FC<StreamCardFullProps> = ({ stream, className }) => {
+export const StreamCardFull: React.FC<StreamCardFullProps> = ({
+  stream,
+  className,
+}) => {
   return (
     <div
       className={`
         bg-twitch-bg-secondary 
-        border border-twitch-border-default 
+        border border-twitch-border-active 
         rounded-lg 
         overflow-hidden 
         hover:border-twitch-border-hover 
+        hover:bg-twitch-bg-primary
         transition-colors 
         cursor-pointer
         ${className}
