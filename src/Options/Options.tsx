@@ -67,18 +67,66 @@ const OptionsPage = () => {
         </div>
       </div>
 
-      <div className="text-sm text-gray-500">
-        Ces informations sont nécessaires pour accéder à l'API Twitch. Vous
-        pouvez les obtenir en créant une application sur{" "}
-        <a
-          href="https://dev.twitch.tv/console/apps"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-twitch-brand-primary hover:underline"
-        >
-          la console développeur Twitch
-        </a>
-        .
+      <div className="space-y-4 text-sm text-gray-500">
+        <p>Pour obtenir vos clés d'API Twitch, suivez ces étapes :</p>
+
+        <ol className="list-decimal pl-5 space-y-2">
+          <li>
+            Rendez-vous sur{" "}
+            <a
+              href="https://dev.twitch.tv/console/apps"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-twitch-brand-primary hover:underline"
+            >
+              la console développeur Twitch
+            </a>
+          </li>
+
+          <li>Cliquez sur "Enregistrer votre application"</li>
+
+          <li>
+            Remplissez le formulaire :
+            <ul className="list-disc pl-5 mt-1">
+              <li>
+                Nom : Choisissez un nom pour votre application (ex: "Mon
+                Extension Twitch")
+              </li>
+              <li>
+                URLs de redirection OAuth :
+                <ul className="list-disc pl-5 mt-1">
+                  <li>Cliquez sur "Ajouter" pour ajouter une nouvelle URL</li>
+                  <li>Entrez simplement : http://localhost</li>
+                  <li>
+                    Cette URL ne sera pas utilisée mais est requise par Twitch
+                  </li>
+                </ul>
+              </li>
+              <li>Catégorie : Sélectionnez "Browser Extension"</li>
+            </ul>
+          </li>
+
+          <li>Cliquez sur "Créer"</li>
+
+          <li>Une fois créée, cliquez sur "Gérer" sur votre application</li>
+
+          <li>
+            Sur la page de gestion, vous trouverez :
+            <ul className="list-disc pl-5 mt-1">
+              <li>L'ID Client est affiché directement sur la page</li>
+              <li>Pour le Secret Client, cliquez sur "Nouveau secret"</li>
+              <li>
+                ⚠️ Copiez immédiatement le Secret Client car il ne sera plus
+                visible après
+              </li>
+            </ul>
+          </li>
+        </ol>
+
+        <p className="mt-4 text-yellow-600">
+          ⚠️ Important : Ces informations sont sensibles, ne les partagez jamais
+          et ne les commettez pas dans votre code.
+        </p>
       </div>
     </div>
   );
