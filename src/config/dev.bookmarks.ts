@@ -47,6 +47,10 @@ export const devBookmarks = {
           url: "https://twitch.tv/shaunz",
         },
         {
+          title: "imsofresh",
+          url: "https://twitch.tv/imsofresh",
+        },
+        {
           title: "etreinfame",
           url: "https://twitch.tv/etreinfame",
         },

@@ -54,22 +54,19 @@ module.exports = {
         },
         twitch: {
           bg: {
-            primary: TWITCH_THEME.colors.bg.primary,
-            secondary: TWITCH_THEME.colors.bg.secondary,
-            tertiary: TWITCH_THEME.colors.bg.tertiary,
-            hover: TWITCH_THEME.colors.bg.hover,
+            primary: TWITCH_THEME.colors.darkBackground.primary,
+            secondary: TWITCH_THEME.colors.darkBackground.secondary,
+            tertiary: TWITCH_THEME.colors.darkBackground.tertiary,
+            hover: TWITCH_THEME.colors.darkBackground.hover,
           },
           border: {
-            default: TWITCH_THEME.colors.border.default,
-            hover: TWITCH_THEME.colors.border.hover,
+            default: TWITCH_THEME.colors.gray,
+            active: TWITCH_THEME.colors.brand.primary,
+            hover: TWITCH_THEME.colors.brand.secondary,
           },
           text: {
-            primary: TWITCH_THEME.colors.text.primary,
-            secondary: TWITCH_THEME.colors.text.secondary,
-          },
-          brand: {
-            primary: TWITCH_THEME.colors.brand.primary,
-            secondary: TWITCH_THEME.colors.brand.secondary,
+            primary: TWITCH_THEME.colors.white,
+            secondary: TWITCH_THEME.colors.gray,
           },
           status: {
             live: TWITCH_THEME.colors.status.live,

@@ -17,20 +17,34 @@ export const StreamExplorerView: React.FC<StreamExplorerViewProps> = ({
     const findBookmarkStream = (
       bookmarkStreams: BookmarkStreams[]
     ): BookmarkStreams | null => {
-      console.log("selectedBookmarkStreamsId", selectedBookmarkStreamsId);
       for (const bookmarkStream of bookmarkStreams) {
         if (bookmarkStream.id === selectedBookmarkStreamsId) {
-          console.log("found", bookmarkStream.title);
           return bookmarkStream;
         }
         const found = findBookmarkStream(bookmarkStream.children);
-        console.log("found", found?.title);
         if (found) return found;
       }
       return null;
     };
     return findBookmarkStream([bookmarkStreams]);
   }, [bookmarkStreams, selectedBookmarkStreamsId])();
+
+  const getAllStreamsFromBookmarkStream = (bookmarkStream: BookmarkStreams) => {
+    let streams = bookmarkStream.streams;
+    const getChildrenStreams = (bookmarkStream: BookmarkStreams) => {
+      bookmarkStream.children?.forEach((child) => {
+        streams = streams.concat(child.streams);
+        getChildrenStreams(child);
+      });
+    };
+    getChildrenStreams(bookmarkStream);
+    return streams.sort((a, b) => {
+      if (a.isLive !== b.isLive) {
+        return b.isLive ? 1 : -1;
+      }
+      return a.user_name.localeCompare(b.user_name);
+    });
+  };
 
   if (!selectedBookmarkStreamsId) {
     return (
@@ -57,7 +71,9 @@ export const StreamExplorerView: React.FC<StreamExplorerViewProps> = ({
           {selectedBookmarkStream.filteredCount}
         </span>
       </div>
-      <StreamGrid bookmarkStreams={selectedBookmarkStream} />
+      <StreamGrid
+        streams={getAllStreamsFromBookmarkStream(selectedBookmarkStream)}
+      />
     </div>
   );
 };

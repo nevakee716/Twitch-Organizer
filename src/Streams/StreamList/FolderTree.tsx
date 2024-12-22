@@ -51,7 +51,7 @@ const FolderTreeItem = ({
           "flex items-center w-full px-2 py-1 text-sm rounded-md",
           "hover:bg-twitch-bg-hover",
           selectedBookmarkStreamsId === bookmarkStream.id &&
-            "bg-twitch-brand-primary text-white",
+            "bg-twitch-border-active text-white",
           "transition-colors"
         )}
         style={{ paddingLeft: `${level * 0.5}rem` }}

@@ -3,12 +3,13 @@ import { UserIcon } from "lucide-react";
 
 interface StreamCardFullProps {
   stream: TwitchStream;
+  className?: string;
 }
 
-export const StreamCardFull = ({ stream }: StreamCardFullProps) => {
+export const StreamCardFull: React.FC<StreamCardFullProps> = ({ stream, className }) => {
   return (
     <div
-      className="
+      className={`
         bg-twitch-bg-secondary 
         border border-twitch-border-default 
         rounded-lg 
@@ -16,7 +17,8 @@ export const StreamCardFull = ({ stream }: StreamCardFullProps) => {
         hover:border-twitch-border-hover 
         transition-colors 
         cursor-pointer
-      "
+        ${className}
+      `}
     >
       <img
         src={

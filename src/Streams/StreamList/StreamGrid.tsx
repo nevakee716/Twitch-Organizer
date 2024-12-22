@@ -5,13 +5,12 @@ import { getGridClass } from "./gridHelper";
 import { useStreamStore } from "../Stores/useStore";
 import { StreamCardFull } from "./StreamCardFull";
 import { StreamCardCompact } from "./StreamCardCompact";
-import { BookmarkStreams } from "@/types/bookmark";
 
 interface StreamGridProps {
-  bookmarkStreams: BookmarkStreams;
+  streams: TwitchStream[];
 }
 
-export const StreamGrid: React.FC<StreamGridProps> = ({ bookmarkStreams }) => {
+export const StreamGrid: React.FC<StreamGridProps> = ({ streams }) => {
   const { options } = useStreamStore();
 
   const handleClick = (stream: TwitchStream) => {
@@ -20,16 +19,20 @@ export const StreamGrid: React.FC<StreamGridProps> = ({ bookmarkStreams }) => {
 
   return (
     <div className={`grid ${getGridClass(options.streamsPerRow)} gap-4`}>
-      {bookmarkStreams.streams.map((stream) => (
-        <div key={stream.user_login} onClick={() => handleClick(stream)}>
+      {streams.map((stream) => (
+        <div
+          key={stream.user_login}
+          onClick={() => handleClick(stream)}
+          className="h-full"
+        >
           {options.isCompactView ? (
-            <StreamCardCompact stream={stream} />
+            <StreamCardCompact className="h-full" stream={stream} />
           ) : (
-            <StreamCardFull stream={stream} />
+            <StreamCardFull className="h-full" stream={stream} />
           )}
         </div>
       ))}
-      {bookmarkStreams.streams.length === 0 && (
+      {streams.length === 0 && (
         <div className="text-twitch-text-secondary col-span-full text-center">
           Aucun stream en ligne dans ce dossier
         </div>

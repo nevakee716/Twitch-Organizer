@@ -11,22 +11,27 @@ import {
 
 interface StreamCardCompactProps {
   stream: TwitchStream;
+  className?: string;
 }
 
-export const StreamCardCompact = ({ stream }: StreamCardCompactProps) => {
+export const StreamCardCompact: React.FC<StreamCardCompactProps> = ({
+  stream,
+  className,
+}) => {
   return (
     <div
-      className="
+      className={`
         bg-twitch-bg-secondary 
-        border border-twitch-border-default 
+        border border-twitch-border-active 
         rounded-lg 
         overflow-hidden 
-        hover:border-twitch-border-hover 
+        hover:bg-twitch-bg-tertiary
         transition-colors 
         p-3 
         cursor-pointer
         space-y-1
-      "
+        ${className}
+      `}
     >
       {/* Première ligne: nom du stream et viewers */}
       <div className="flex items-center gap-2">

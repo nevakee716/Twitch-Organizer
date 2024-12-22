@@ -1,7 +1,7 @@
 // components/Files.tsx
 import React, { useEffect, useState } from "react";
 import { useStreamStore } from "../Stores/useStore";
-import { BookmarkFolder } from "./BookmarkFolder";
+import { StreamAccordeon } from "./StreamAccordeon";
 import { FolderTree } from "./FolderTree";
 import { StreamExplorerView } from "./StreamExplorerView";
 import { StreamListSettings } from "./StreamListSettings";
@@ -29,39 +29,42 @@ export const StreamList = () => {
 
   return (
     <div className="min-h-screen bg-twitch-bg-primary text-twitch-text-primary">
-      <div className="sticky top-0 z-10 bg-twitch-bg-primary border-b border-twitch-border-default p-4 backdrop-blur-sm bg-opacity-90 hover:bg-twitch-bg-hover">
+      <div className="sticky top-0 z-10 bg-twitch-bg-primary border-b border-twitch-border-active p-4 backdrop-blur-sm bg-opacity-90 hover:bg-twitch-bg-hover">
         <div className="flex justify-between items-center h-10">
           <StreamListSettings />
         </div>
       </div>
-      {bookmarkAndFilteredStreams && options.isExplorerView && (
-        <div className="p-4 space-y-4">
-          {options.isExplorerView ? (
-            <div className="flex h-[calc(100vh-4rem)]">
-              <div className="w-1/4 border-r border-twitch-border-default p-4 overflow-y-auto">
-                <FolderTree
-                  selectedBookmarkStreamsId={selectedBookmarkStreamsId}
-                  onSelectBookmarkStream={setSelectedBookmarkStreamsId}
-                  bookmarkStreams={bookmarkAndFilteredStreams}
-                />
-              </div>
+      {!anyStreams ? (
+        <StreamListEmpty isInitializing={isInitializing} />
+      ) : (
+        bookmarkAndFilteredStreams && (
+          <div className="p-4 space-y-4">
+            {options.isExplorerView ? (
+              <div className="flex h-[calc(100vh-4rem)]">
+                <div className="w-1/4 border-r border-twitch-border-active p-4 overflow-y-auto">
+                  <FolderTree
+                    selectedBookmarkStreamsId={selectedBookmarkStreamsId}
+                    onSelectBookmarkStream={setSelectedBookmarkStreamsId}
+                    bookmarkStreams={bookmarkAndFilteredStreams}
+                  />
+                </div>
 
-              <div className="flex-1 p-4 overflow-y-auto">
-                <StreamExplorerView
-                  bookmarkStreams={bookmarkAndFilteredStreams}
-                  selectedBookmarkStreamsId={selectedBookmarkStreamsId}
-                />
+                <div className="flex-1 p-4 overflow-y-auto">
+                  <StreamExplorerView
+                    bookmarkStreams={bookmarkAndFilteredStreams}
+                    selectedBookmarkStreamsId={selectedBookmarkStreamsId}
+                  />
+                </div>
               </div>
-            </div>
-          ) : (
-            bookmarkAndFilteredStreams.map((bookmarkStream) => (
-              <BookmarkFolder
-                key={bookmarkStream.id}
-                bookmarkStream={bookmarkStream}
+            ) : (
+              <StreamAccordeon
+                key={bookmarkAndFilteredStreams.id}
+                isAlwaysOpen={true}
+                bookmarkStreams={bookmarkAndFilteredStreams}
               />
-            ))
-          )}
-        </div>
+            )}
+          </div>
+        )
       )}
 
       {bookmarkAndFilteredStreams?.totalCount === 0 && anyStreams && (
@@ -69,7 +72,6 @@ export const StreamList = () => {
           No streams found
         </div>
       )}
-      {!anyStreams && <StreamListEmpty isInitializing={isInitializing} />}
     </div>
   );
 };

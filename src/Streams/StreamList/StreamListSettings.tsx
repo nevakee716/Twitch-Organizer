@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "@/components/ui/switch";
+import { TwitchSwitch } from "@/components/ui/twich-switch";
 import { Label } from "@/components/ui/label";
 import { useStreamStore } from "../Stores/useStore";
 import { Separator } from "@/components/ui/separator";
@@ -24,7 +24,7 @@ export const StreamListSettings = ({}: StreamListSettingsProps) => {
         placeholder="Search streams..."
         value={options.searchTerm}
         onChange={(e) => setOptions({ searchTerm: e.target.value })}
-        className="w-64 bg-twitch-bg-secondary border-twitch-border-default text-twitch-text-primary placeholder:text-twitch-text-secondary"
+        className="w-64 bg-twitch-bg-secondary border-twitch-border-active text-twitch-text-primary placeholder:text-twitch-text-secondary"
       />
       <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-2">
@@ -34,7 +34,7 @@ export const StreamListSettings = ({}: StreamListSettingsProps) => {
           >
             Compact
           </Label>
-          <Switch
+          <TwitchSwitch
             id="compact-view"
             checked={options.isCompactView}
             onCheckedChange={(value) => setOptions({ isCompactView: value })}
@@ -50,7 +50,7 @@ export const StreamListSettings = ({}: StreamListSettingsProps) => {
           >
             En ligne
           </Label>
-          <Switch
+          <TwitchSwitch
             id="hide-offline"
             checked={options.hideOfflineStreams}
             onCheckedChange={(value) =>
@@ -68,7 +68,7 @@ export const StreamListSettings = ({}: StreamListSettingsProps) => {
           >
             Explorer
           </Label>
-          <Switch
+          <TwitchSwitch
             id="explorer-view"
             checked={options.isExplorerView}
             onCheckedChange={(value) => setOptions({ isExplorerView: value })}
@@ -92,7 +92,7 @@ export const StreamListSettings = ({}: StreamListSettingsProps) => {
           >
             <SelectTrigger
               id="streams-per-row"
-              className="w-16 h-8 text-sm bg-twitch-bg-secondary border-twitch-border-default"
+              className="w-16 h-8 text-sm bg-twitch-bg-secondary border-twitch-border-active"
             >
               <SelectValue />
             </SelectTrigger>
