@@ -25,16 +25,8 @@ export async function initBookmarks(): Promise<void> {
       title: "TwitchOrganizer",
     });
     if (bookmarks.length === 0) {
-      if (process.env.NODE_ENV === "development") {
-        // En dev, on crée l'arborescence complète
-        await createBookmarkTree(devBookmarks as BookmarkNode);
-      } else {
-        // En prod, on crée juste le dossier de base
-        await browser.bookmarks.create({
-          title: "TwitchOrganizer",
-          type: "folder",
-        });
-      }
+      await createBookmarkTree(devBookmarks as BookmarkNode);
+
       console.log("TwitchOrganizer bookmarks initialized");
     } else {
       console.log("TwitchOrganizer bookmarks already exist");

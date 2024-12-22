@@ -1,6 +1,7 @@
 import { AuthManager } from "./auth";
 import type { TwitchCredentials } from "@/types/twitchCredential";
 import { TwitchStream } from "@/types/twitch";
+import { useStreamStore } from "@/Streams/Stores/useStore";
 
 export class APIClient {
   private static instance: APIClient;
@@ -13,6 +14,7 @@ export class APIClient {
   ) {
     this.twitchCredentials = twitchCredentials;
     this.authManager = authManager;
+
     console.log("APIClient instance created");
   }
 
@@ -44,6 +46,7 @@ export class APIClient {
     });
 
     if (!response.ok) {
+      useStreamStore.getState().setApiError(response.statusText);
       throw new Error(`API request failed: ${response.statusText}`);
     }
 

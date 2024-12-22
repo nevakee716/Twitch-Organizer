@@ -31,6 +31,9 @@ interface StreamStore {
 
   bookmarkAndFilteredStreams: BookmarkStreams | null;
   updateBookmarkAndFilteredStreams: () => void;
+
+  apiError: string | null;
+  setApiError: (error: string) => void;
 }
 
 export const useStreamStore = create<StreamStore>()(
@@ -43,6 +46,12 @@ export const useStreamStore = create<StreamStore>()(
           bookmarks: [],
           error: null,
         });
+      },
+
+      apiError: null,
+      setApiError: (error: string) => {
+        console.log("error api", error);
+        set({ apiError: error });
       },
 
       twitchCredentials: {

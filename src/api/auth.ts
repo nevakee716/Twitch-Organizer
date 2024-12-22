@@ -1,3 +1,4 @@
+import { useStreamStore } from "@/Streams/Stores/useStore";
 import type { TwitchCredentials } from "@/types/twitchCredential";
 export interface TokenResponse {
   access_token: string;
@@ -37,6 +38,7 @@ export class AuthManager {
 
     if (!response.ok) {
       const errorText = await response.text();
+      useStreamStore.getState().setApiError(errorText);
       throw new Error(
         `Failed to fetch token (${response.status}): ${errorText}`
       );
