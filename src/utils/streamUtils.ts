@@ -6,25 +6,13 @@ export interface StreamCounts {
   total: number;
 }
 
-export const calculateStreamCounts = (
-  node: BookmarkNode,
-  onlineStreams: Record<string, TwitchStream>
-): StreamCounts => {
-  let counts = { online: 0, total: 0 };
-
-  const processNode = (node: BookmarkNode) => {
-    if (node.url?.includes("twitch.tv")) {
-      counts.total++;
-      if (onlineStreams[node.title.toLowerCase()]) {
-        counts.online++;
-      }
+export const sortStreams = (streams: TwitchStream[]): TwitchStream[] => {
+  return streams.sort((a, b) => {
+    if (a.isLive !== b.isLive) {
+      return b.isLive ? 1 : -1;
     }
-    // Ajouter récursivement les compteurs des sous-dossiers
-    node.children?.forEach(processNode);
-  };
-
-  processNode(node);
-  return counts;
+    return a.user_name.localeCompare(b.user_name);
+  });
 };
 
 export const filterAndSortStreams = (
