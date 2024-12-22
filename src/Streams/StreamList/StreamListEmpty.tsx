@@ -1,16 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { initBookmarks } from "@/utils/bookmarks";
 import { useStreamStore } from "../Stores/useStore";
+import { useState } from "react";
 
-interface StreamListEmptyProps {
-  isInitializing: boolean;
-}
+interface StreamListEmptyProps {}
 
-export const StreamListEmpty = ({ isInitializing }: StreamListEmptyProps) => {
-  const store = useStreamStore();
-  const handleInitBookmarks = () => {
-    initBookmarks();
-    store.updateBookmarkAndFilteredStreams();
+export const StreamListEmpty = ({}: StreamListEmptyProps) => {
+  const { refreshOnlineStatus } = useStreamStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const handleInitBookmarks = async () => {
+    setIsLoading(true);
+    await initBookmarks();
+    await refreshOnlineStatus();
+    setIsLoading(false);
   };
 
   return (
@@ -21,11 +23,11 @@ export const StreamListEmpty = ({ isInitializing }: StreamListEmptyProps) => {
       </p>
       <Button
         onClick={handleInitBookmarks}
-        disabled={isInitializing}
+        disabled={isLoading}
         variant="default"
-        className="bg-twitch-brand-primary hover:bg-twitch-brand-secondary"
+        className="bg-twitch-border-active hover:bg-twitch-border-hover"
       >
-        {isInitializing ? "Initialisation..." : "Initialiser les bookmarks"}
+        {isLoading ? "Initialisation..." : "Initialiser les bookmarks"}
       </Button>
     </div>
   );

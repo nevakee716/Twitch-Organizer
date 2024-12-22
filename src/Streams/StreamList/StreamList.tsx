@@ -35,7 +35,7 @@ export const StreamList = () => {
         </div>
       </div>
       {!anyStreams ? (
-        <StreamListEmpty isInitializing={isInitializing} />
+        <StreamListEmpty />
       ) : (
         bookmarkAndFilteredStreams && (
           <div className="p-4 space-y-4">
