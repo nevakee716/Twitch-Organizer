@@ -21,6 +21,9 @@ export const StreamListEmpty = ({}: StreamListEmptyProps) => {
         Pour utiliser cette extension, vous devez ajouter vos streams Twitch
         favoris dans le dossier "TwitchOrganizer".
       </p>
+      <p className="text-twitch-text-primary">
+        Vous pouvez utiliser des sous-dossiers pour organiser vos streams.
+      </p>
       <Button
         onClick={handleInitBookmarks}
         disabled={isLoading}
