@@ -33,7 +33,7 @@ export const StreamAccordeon = ({
         value={bookmarkStreams.id}
         className={cn(
           "border rounded-lg transition-colors",
-          "bg-twitch-bg-secondary border-twitch-border-default hover:border-twitch-border-hover"
+          "bg-twitch-bg-secondary border-twitch-border-active hover:border-twitch-border-hover"
         )}
       >
         <AccordionTrigger
