@@ -28,7 +28,6 @@ export const StreamList = () => {
   }, []);
 
   const displayStreamList = () => {
-    console.log(twitchCredentials);
     if (
       twitchCredentials.clientId === "" ||
       twitchCredentials.clientSecret === ""
