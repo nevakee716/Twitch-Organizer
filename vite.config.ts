@@ -11,9 +11,6 @@ function generateManifest() {
     description: pkg.description,
     version: pkg.version,
     ...manifest,
-    manifest_version: 2,
-    content_security_policy:
-      "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'",
   };
 }
 
@@ -26,7 +23,7 @@ export default defineConfig({
     react(),
     webExtension({
       manifest: generateManifest,
-      browser: "firefox",
+      browser: process.env.TARGET || "firefox",
       webExtConfig: {
         startUrl: ["about:debugging#/runtime/this-firefox", "about:addons"],
         dev: {
@@ -42,11 +39,12 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: process.env.BUILD_PATH || "dist",
     rollupOptions: {
       external: [
         // Exclure les fichiers de dev de la compilation en production uniquement
-        ...(isProd ? [/src\/config\/dev\.config\.ts$/] : [])
-      ]
-    }
-  }
+        ...(isProd ? [/src\/config\/dev\.config\.ts$/] : []),
+      ],
+    },
+  },
 });

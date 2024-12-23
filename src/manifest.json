@@ -13,7 +13,8 @@
     "128": "icon/128.png"
   },
   "{{chrome}}.action": {
-    "default_popup": "src/popup/popup.html"
+    "default_title": "Twitch Organizer",
+    "default_popup": "src/Popup/Popup.html"
   },
   "{{firefox}}.browser_action": {
     "default_title": "Twitch Organizer",
@@ -21,12 +22,10 @@
   },
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
-    "{{firefox}}.scripts": [
-      "src/background.ts"
-    ]
+    "{{firefox}}.scripts": ["src/background.ts"]
   },
-  "permissions": [
-    "storage",
-    "bookmarks"
-  ]
+  "permissions": ["storage", "bookmarks", "browser_action"],
+  "action": {
+    "default_title": "Twitch Bookmarks"
+  }
 }

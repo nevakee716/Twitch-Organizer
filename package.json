@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:firefox": "tsc && BUILD_PATH=dist-firefox TARGET=firefox vite build",
+    "build:chrome": "tsc && BUILD_PATH=dist-chrome TARGET=chrome vite build",
     "postinstall": "[ -f src/config/dev.config.ts ] || cp src/config/dev.config.template.ts src/config/dev.config.ts",
     "release_minor": "npm version minor && npm run update_manifest_minor && git add . && npm run xpiRelease && zip -r twitch-bookmarks.zip dist/web-ext-artifacts && git add . && git commit -m \"repackage\" && git push",
     "release_major": "npm version major && npm run update_manifest_major && git add . && npm run xpiRelease && zip -r twitch-bookmarks.zip dist/web-ext-artifacts && git add . && git commit -m \"repackage\" && git push",
