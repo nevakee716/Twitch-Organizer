@@ -3,17 +3,31 @@ import { devBookmarks } from "@/config/dev.bookmarks";
 import { BookmarkNode } from "@/types/bookmark";
 
 function cleanBookmarkTree(node: BookmarkNode): BookmarkNode {
-  // Clone le noeud pour éviter de modifier l'original
   const cleanNode = { ...node };
-  
-  // Nettoie le titre en enlevant "- Twitch"
+
+  // Enlève "- Twitch" du titre
   if (cleanNode.title) {
-    cleanNode.title = cleanNode.title.replace(/\s*-\s*Twitch$/i, '');
+    cleanNode.title = cleanNode.title.replace(/\s*-\s*Twitch$/i, "");
+  }
+  // Nettoie le titre et extrait le nom du streameur si nécessaire
+  if (cleanNode.url) {
+    // Essaie de trouver un nom de streameur dans l'URL
+    const twitchMatch = cleanNode.url.match(/twitch\.tv\/([a-zA-Z0-9_]+)/i);
+    if (twitchMatch) {
+      const streamerName = twitchMatch[1];
+      if (
+        cleanNode.title.toLocaleLowerCase() !== streamerName.toLocaleLowerCase()
+      ) {
+        cleanNode.title = streamerName;
+      }
+    }
   }
 
-  // Récursivement nettoie les enfants s'ils existent
+  // Récursivement nettoie les enfants
   if (cleanNode.children) {
-    cleanNode.children = cleanNode.children.map(child => cleanBookmarkTree(child));
+    cleanNode.children = cleanNode.children.map((child) =>
+      cleanBookmarkTree(child)
+    );
   }
 
   return cleanNode;
@@ -28,7 +42,9 @@ export async function getTwitchBookmarks(): Promise<BookmarkNode[]> {
       const folder = bookmarks[0];
       const subTree = await browser.bookmarks.getSubTree(folder.id);
       // Nettoie l'arbre avant de le retourner
-      return subTree[0].children?.map(child => cleanBookmarkTree(child)) || [];
+      return (
+        subTree[0].children?.map((child) => cleanBookmarkTree(child)) || []
+      );
     }
     return [];
   } catch (error) {
