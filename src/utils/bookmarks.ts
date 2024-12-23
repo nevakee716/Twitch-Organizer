@@ -85,7 +85,6 @@ async function createBookmarkTree(
   } else {
     bookmarkData.type = "folder";
   }
-  console.log("Creating bookmark:", bookmarkData);
   const bookmark = await browser.bookmarks.create(bookmarkData);
 
   if (node.children) {
