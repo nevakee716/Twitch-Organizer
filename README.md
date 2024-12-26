@@ -11,8 +11,7 @@ Une extension Firefox qui vous permet d'organiser vos streams Twitch favoris en 
 - 🎮 Classement par catégories (Gaming, Just Chatting, Art, etc.)
 
 ## 🛠️ Installation
-
-En cours d'upload sur les differents store
+Lien firefox : https://github.com/nevakee716/Twitch-Organizer/raw/refs/heads/main/firefox.xpi
 
 ## 📝 Utilisation
 
