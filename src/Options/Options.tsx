@@ -95,10 +95,12 @@ const OptionsPage = () => {
               <li>
                 URLs de redirection OAuth :
                 <ul className="list-disc pl-5 mt-1">
-                  <li>Cliquez sur "Ajouter" pour ajouter une nouvelle URL</li>
                   <li>Entrez simplement : http://localhost</li>
                   <li>
                     Cette URL ne sera pas utilisée mais est requise par Twitch
+                  </li>
+                  <li>
+                    <strong>NE PAS cliquer sur ajouter</strong>
                   </li>
                 </ul>
               </li>
