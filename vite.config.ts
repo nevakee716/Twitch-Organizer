@@ -23,7 +23,7 @@ export default defineConfig({
     react(),
     webExtension({
       manifest: generateManifest,
-      browser: process.env.TARGET || "firefox",
+      browser: process.env.TARGET || "chrome",
       webExtConfig: {
         startUrl: ["about:debugging#/runtime/this-firefox", "about:addons"],
         dev: {
