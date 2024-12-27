@@ -29,3 +29,4 @@ dist-ssr
 
 src/config/dev.config.ts
 /dist-chrome
+dist-chrome.zip
