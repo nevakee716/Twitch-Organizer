@@ -82,8 +82,6 @@ async function createBookmarkTree(
   }
   if (node.url) {
     bookmarkData.url = node.url;
-  } else {
-    bookmarkData.type = "folder";
   }
   const bookmark = await browser.bookmarks.create(bookmarkData);
 
